@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech Converter</title>
+    <script>
+        // File upload process
+        async function uploadFile() {
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput');
+            const typeSelect = document.getElementById("typeSelect");
+            formData.append('file', fileInput.files[0]);
+            formData.append('type', typeSelect.value);
+
+            try {
+                const response = await fetch('http://localhost:8000/upload/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.status === 200) {
+                    const filename = data.filename;
+                    document.getElementById('downloadLink').setAttribute('href', `http://localhost:8000/download/?filename=${filename}`);
+                    document.getElementById('downloadLink').innerText = "Download the WAV file";
+                    // display: none; to hide, so show it
+                    document.getElementById('downloadLink').style.display = "block";
+                } else {
+                    alert(data.detail);
+                }
+            } catch (error) {
+                alert('Error uploading file.' + error);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Text to Speech Converter</h1>
+    <h3>Upload your text file</h3>
+    <input type="file" id="fileInput" accept=".txt">
+    <br><br>
+    <label for="typeSelect">Choose a type:</label>
+    <select id="typeSelect" name="type">
+      <option value="google">Google</option>
+      <option value="elevenlabs">ElevenLabs</option>
+      <option value="voicevox">VOICEVOX</option>
+    </select>
+    <br><br>
+    <button onclick="uploadFile()">Upload</button>
+    <br><br>
+    <a id="downloadLink" href="#" style="display: none;"></a>
+</body>
+
+</html>
