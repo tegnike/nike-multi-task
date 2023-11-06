@@ -119,11 +119,6 @@ venv.bak/
 # Databases
 *.sqlite
 
-# Deployment
-.docker/
-docker-compose.yml
-Dockerfile
-
 # Logs
 *.log
 
