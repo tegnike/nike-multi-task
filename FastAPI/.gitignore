@@ -128,3 +128,4 @@ venv.bak/
 config/*
 /app/output/*
 !/app/output/.keep
+!/app/output/nikechan.png
